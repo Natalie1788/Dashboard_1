@@ -1,0 +1,191 @@
+body {
+  background: url("images/bgimage.jpg") 100% / cover;
+  color: rgb(23, 23, 23);
+}
+.date-and-time {
+  background-color: rgba(207, 207, 207, 0.8);
+  border: 2px solid rgb(28, 46, 68);
+  border-radius: 10px;
+  width: 12%;
+  height: 30px;
+  margin: 10px auto;
+  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.date-text {
+  color: rgb(10, 105, 105);
+}
+.time-text {
+  color: rgb(128, 60, 11);
+  /*margin-left: 20px;*/
+}
+
+.main-container {
+  width: 80%;
+  margin: 100px auto;
+}
+h1, h2 {
+  text-align: center;
+}
+
+h2 {
+  border-bottom: 2px solid rgb(28, 46, 68);
+  width: 80%;
+  margin: 10px auto;
+  color: rgb(40, 40, 40);
+}
+#edit-title {
+  color: white;
+  width: 40%;
+  margin: 10px auto;
+}
+   .editable {
+      border: 1px solid #ccc;
+      padding: 5px;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .editable:hover {
+      background-color: #f0f0f0;
+    }
+
+    .editing {
+      border: 1px solid rgb(0, 115, 255);
+    }
+
+.board-container {
+  display: flex;
+  justify-content: space-between;
+}
+.board-item {
+  width: 24%;
+  height: 400px;
+  background-color: rgba(149, 149, 149, 0.8);
+  border-radius: 10px;
+  border: 2px solid rgb(28, 46, 68);
+}
+.down-part {
+  text-align: center;
+}
+input {
+  width: 50px;
+  height: 20px;
+  background-color: beige;
+}
+
+.board-item-body {
+  overflow-y: scroll;
+  height: 310px;
+}
+.links-list {
+  list-style: none;
+  padding-left: 20px;
+  margin: 0 auto;
+}
+.links-list-item {
+  width: 90%;
+  height: 50px;
+  border-radius: 6px;
+  background-color: rgb(217, 217, 217);
+  margin-bottom: 10px;
+  position: relative;
+}
+.links-title {
+  text-decoration: none;
+  color: black;
+}
+.add-link {
+  text-align: center;
+}
+.delete-link {
+  position: absolute;
+  right: 2%;
+  top: 10%;
+}
+.link-input {
+  width: 70%;
+ margin-left: 10px;
+ margin-top: 10px;
+  background-color: rgb(203, 233, 245);
+}
+
+.weather-block {
+  width: 90%;
+  background-color: rgb(225, 225, 225);
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  margin:  0 auto;
+  text-align: center;
+}
+.weather-text {
+  color: blue;
+}
+.weather-flex {
+  display: flex;
+  justify-content: space-around;
+  /*border: 1px solid red;*/
+  margin-top: -25px;
+}
+h3 {
+  text-align: center;
+}
+#euro-rate,
+#usd-rate,
+#gbp-rate {
+  text-align: center;
+}
+.currency-info {
+  width: 80%;
+  height: auto;
+  background-color: #d1d1d1;
+  border-radius: 6px;
+  margin:  0 auto;
+  padding: 10px;
+}
+.notes-area {
+  background-color: #d1d1d1;
+  color: black;
+  width: 90%;
+  margin-left: 10px;
+}
+.favicon {
+  width: 20%;
+}
+
+
+@media screen and (max-width: 900px) {
+  .board-item {
+    width: 50%;
+}
+.date-and-time {
+  width: 30%;
+}
+.board-container {
+  flex-wrap: wrap;
+  
+}
+.main-container {
+  width: 100%;
+}
+}
+
+
+@media screen and (max-width: 500px) {
+  .main-container {
+    width: 90%;
+  }
+  .board-item {
+    width: 100%;
+  }
+  .board-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .date-and-time {
+    width: 50%;
+  }
+}

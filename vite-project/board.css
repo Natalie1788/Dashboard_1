@@ -1,0 +1,63 @@
+body {
+    background: url("images/bgimage.jpg") 100% / cover;
+    color: rgb(23, 23, 23);
+}
+.data-item {
+    background-color: grey;
+    border-radius: 10px;
+    width: 15%;
+    height: 20px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.main-container {
+    width: 80%;
+    margin: 120px auto;
+}
+h1, h2 {
+    text-align: center;
+}
+#edit-title {
+    color: white;
+    width: 40%;
+    margin: 10px auto;
+}
+/*#edit-title .active {
+    border-bottom: 2px solid blue;
+    cursor: pointer;
+     }*/
+     .editable {
+        border: 1px solid #ccc;
+        padding: 5px;
+        display: inline-block;
+        cursor: pointer;
+      }
+  
+      .editable:hover {
+        background-color: #f0f0f0;
+      }
+  
+      .editing {
+        border: 1px solid rgb(0, 115, 255);
+      }
+
+.board-container {
+    display: flex;
+    justify-content: space-between;
+}
+.board-item {
+    width: 24%;
+    height: 350px;
+    background-color: rgba(149, 149, 149, 0.8);
+    border-radius: 10px;
+    border: 2px solid rgb(0, 115, 255);
+}
+.down-part {
+    text-align: center;
+}
+input {
+    width: 50px;
+    height: 20px;
+    background-color: beige;
+}

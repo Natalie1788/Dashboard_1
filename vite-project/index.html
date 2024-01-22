@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <script type="module" src="main.js" defer></script>
+        <title>Dashboard</title>
+    </head>
+
+    <body>
+        <div class="date-and-time">
+            <span class="date-text"></span>
+            <span class="time-text"></span>
+        </div>
+
+        <div class="main-container">
+        <h1 id="edit-title">My dashboard</h1>
+        <div class="board-container">
+            <div class="board-item">
+                <h2>Snabblänkar</h2>
+                <div class="board-item-body">
+                    <ul class="links-list">
+                      
+                        <!--<li class="links-list-item">
+                            <a class="link-title" href="https://www.google.com/" target="_blank">Google</a>
+                        </li>
+                        <li class="links-list-item">
+                            <a class="link-title" href="https://chat.openai.com/auth/login" target="_blank">Chat GPT</a>
+                        </li>
+                        <li class="links-list-item">
+                            <a class="link-title" href="https://www.notion.so/" target="_blank">Notion</a>
+                        </li>
+                        <li class="links-list-item">
+                            <a class="link-title" href="https://accounts.google.com" target="_blank">Gmail</a>
+                        </li>!-->
+                    </ul>
+                </div>
+                
+                    <div class="add-link">
+                        <button class="add-link-btn">Lägg till länk</button>
+                    </div>
+                
+            </div>
+
+            <div class="board-item">
+                <h2>Dagens väder</h2>
+                <div class="board-item-body">
+                    <div class="weather-info">
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="board-item">
+                <h2>Currency</h2>
+                <div class="board-item-body">
+                    <div class="currency-info">
+                        <h3>Valutaväxlingskurser för den svenska kronan</h2>
+                        <p id="euro-rate">€: </p>
+                        <p id="usd-rate">$: </p>
+                        <p id="gbp-rate">£: </p>
+                      </div>
+                </div>
+            </div>
+
+            <div class="board-item">
+                <h2>Anteckningar</h2>
+                <div class="board-item-body">
+                 
+                    <textarea class="notes-area" rows="15" cols="30" placeholder="Skapa din snabb anteckning..." >
+                        
+                    </textarea>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="down-part">
+        <button class="bg-btn">Slumpa ny backgrund</button>
+    </div>
+    </body>
+</html>
