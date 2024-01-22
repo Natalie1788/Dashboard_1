@@ -75,89 +75,105 @@ async function getImage() {
 //Menu links creating -------------------------------------------------------------------------------//
 
 const addLinkBtn = document.querySelector(".add-link-btn");
-const linkList = document.querySelector(".links-list");
+  const linkList = document.querySelector(".links-list");
 
-function addLink() { 
-  
-  const newLinkItem = document.createElement('li');
-  newLinkItem.classList.add("links-list-item");
+  function addLink(href, text, faviconUrl) {
+    const newLinkItem = document.createElement("li");
+    newLinkItem.classList.add("links-list-item");
 
-  // Проверяем, существует ли уже ссылка внутри элемента
-  const existingLinkTitle = newLinkItem.querySelector('.link-title');
+    // Проверяем, существует ли уже ссылка внутри элемента
+    const existingLinkTitle = newLinkItem.querySelector(".link-title");
+    console.log("existingLinkTitle", existingLinkTitle);
 
-  // Если существует, используем её, иначе создаем новую
-  const linkTitle = existingLinkTitle || document.createElement('a');
- 
-  linkTitle.classList.add('link-title');
-  linkTitle.textContent = 'New link';
- 
-  linkTitle.style.display = "none";
+    // Если существует, используем её, иначе создаем новую
+    const linkTitle = existingLinkTitle || document.createElement("a");
 
-  
-  const linkInput = document.createElement("input");
-  linkInput.classList.add("link-input");
-  linkInput.type = "text";
-  linkInput.placeholder = "Skriv in en ny länk";
+    linkTitle.classList.add("link-title");
 
-  linkInput.addEventListener("keypress", async (event) => {
-    if (event.key === 'Enter') {
-      linkInput.blur();
-      linkInput.style.display = "none";
-
-      /*try {
-        const response = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(linkInput.value)}`);
-        console.log(response)
-        const htmlString = response.data.contents;
-        const titleMatch = htmlString.match(/<title>(.*?)<\/title>/i);
-
-        if (titleMatch && titleMatch[1]) {
-          linkTitle.href = linkInput.value;
-          linkTitle.textContent = titleMatch[1];
-          linkTitle.style.display = "block";
-        } else {
-          throw new Error('Title not found');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        // В случае ошибки, устанавливаем название сайта равным введенному URL
-        linkTitle.href = linkInput.value;
-        linkTitle.textContent = linkInput.value;
-        linkTitle.style.display = "block";
-      }
-    }
-  });*/
-  try {
-    const response = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(linkInput.value)}`);
-    const htmlString = response.data.contents;
-    const titleMatch = htmlString.match(/<title>(.*?)<\/title>/i);
-
-    if (titleMatch && titleMatch[1]) {
-      const title = titleMatch[1];
-      const faviconUrl = getFaviconUrl(linkInput.value);
-      setLinkProperties(linkTitle, linkInput.value, title, faviconUrl);
+    if (href !== null) {
+      linkTitle.href = href;
+      linkTitle.textContent = text;
+      linkTitle.style.display = "block";
     } else {
-      throw new Error('Title not found');
+      linkTitle.href = "";
+      linkTitle.textContent = "New link";
+      linkTitle.style.display = "none";
     }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    // В случае ошибки, устанавливаем название сайта и фавикон равными введенному URL
-    const faviconUrl = getFaviconUrl(linkInput.value);
-    setLinkProperties(linkTitle, linkInput.value, linkInput.value, faviconUrl);
-  }
-  saveLinksToLocalStorage();
-}
-});
 
+    const linkInput = document.createElement("input");
+    linkInput.classList.add("link-input");
+    linkInput.type = "text";
+    linkInput.placeholder = "Skriv in en ny länk";
 
-  const deleteButton = document.createElement('button');
-  deleteButton.classList.add("delete-link")
-  deleteButton.textContent = 'x';
-  deleteButton.addEventListener('click', function () {
-    linkList.removeChild(newLinkItem);
-    saveLinksToLocalStorage();
-  });
+    if (linkTitle.textContent.trim()) {
+      linkInput.style.display = "none";
+    }
 
-  /*linkTitle.addEventListener("dblclick", () => {
+    console.log(faviconUrl);
+    if (faviconUrl) {
+      const favicon = document.createElement("img");
+      favicon.src = faviconUrl;
+      favicon.alt = "Favicon";
+      favicon.classList.add("favicon");
+      linkTitle.appendChild(favicon);
+    }
+
+    linkInput.addEventListener("keypress", async (event) => {
+      if (event.key === "Enter") {
+        linkInput.blur();
+        linkInput.style.display = "none";
+        try {
+          const response = await axios.get(
+            `https://api.allorigins.win/get?url=${encodeURIComponent(
+              linkInput.value
+            )}`
+          );
+          console.log("inputValue", linkInput.value);
+          const htmlString = response.data.contents;
+          const titleMatch = htmlString.match(/<title>(.*?)<\/title>/i);
+
+          if (titleMatch && titleMatch[1]) {
+            const title = titleMatch[1];
+            const faviconUrl = getFaviconUrl(linkInput.value);
+            setLinkProperties(linkTitle, linkInput.value, title, faviconUrl);
+            saveLinksToLocalStorage();
+          } else {
+            throw new Error("Title not found");
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          // В случае ошибки, устанавливаем название сайта и фавикон равными введенному URL
+          const faviconUrl = getFaviconUrl(linkInput.value);
+          setLinkProperties(
+            linkTitle,
+            linkInput.value,
+            linkInput.value,
+            faviconUrl
+          );
+        }
+      }
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-link");
+    deleteButton.textContent = "x";
+    deleteButton.addEventListener("click", function () {
+      linkList.removeChild(newLinkItem);
+      const linksData = JSON.parse(localStorage.getItem("links")) || [];
+
+      // Находим индекс элемента с соответствующим href
+      const indexToDelete = linksData.findIndex((link) => link.href === href);
+
+      if (indexToDelete !== -1) {
+        // Удаляем элемент из массива данных
+        linksData.splice(indexToDelete, 1);
+
+        // Сохраняем обновленные данные в локальное хранилище
+        localStorage.setItem("links", JSON.stringify(linksData));
+      }
+    });
+
+    /*linkTitle.addEventListener("dblclick", () => {
     linkTitle.setAttribute('contentEditable', true);
     linkTitle.classList.add('editing');
     linkTitle.addEventListener('blur', function () {
@@ -165,46 +181,41 @@ function addLink() {
       saveLinksToLocalStorage();
     });*/
 
-
-  newLinkItem.appendChild(deleteButton);
-  newLinkItem.appendChild(linkInput);
-  linkList.appendChild(newLinkItem);
-  newLinkItem.appendChild(linkTitle);
-  saveLinksToLocalStorage();
-
-}
-
-function deleteLink(newLinkItem) {  
-  linkList.removeChild(newLinkItem);
-  saveLinksToLocalStorage();
-}
-
-function getFaviconUrl(url) {
-  const domain = new URL(url).hostname;
-  return `https://www.google.com/s2/favicons?domain=${domain}`;
-}
-
-function setLinkProperties(linkItem, href, text, faviconUrl) {
-  linkItem.href = href;
-  linkItem.textContent = text;
-  linkItem.style.display = "block";
-
-  if (faviconUrl) {
-    const favicon = document.createElement("img");
-    favicon.src = faviconUrl;
-    favicon.alt = "Favicon";
-    favicon.classList.add("favicon");
-    linkItem.appendChild(favicon);
+    newLinkItem.appendChild(deleteButton);
+    newLinkItem.appendChild(linkInput);
+    linkList.appendChild(newLinkItem);
+    newLinkItem.appendChild(linkTitle);
   }
-  saveLinksToLocalStorage();
-}
 
+  function deleteLink(newLinkItem) {
+    linkList.removeChild(newLinkItem);
+  }
 
-addLinkBtn.addEventListener("click", addLink)
+  function getFaviconUrl(url) {
+    const domain = new URL(url).hostname;
+    console.log("domain", domain);
+    return `https://www.google.com/s2/favicons?domain=${domain}`;
+  }
 
+  function setLinkProperties(linkItem, href, text, faviconUrl) {
+    linkItem.href = href;
+    linkItem.textContent = text;
+    linkItem.style.display = "block";
 
- // edit link text
- /*function enableEditTitle(linkTitle) {
+    if (faviconUrl) {
+      const favicon = document.createElement("img");
+      favicon.src = faviconUrl;
+      favicon.alt = "Favicon";
+      favicon.classList.add("favicon");
+      linkItem.appendChild(favicon);
+    }
+    saveLinksToLocalStorage();
+  }
+
+  addLinkBtn.addEventListener("click", addLink);
+
+  // edit link text
+  /*function enableEditTitle(linkTitle) {
   linkTitle.setAttribute('contentEditable', true);
   linkTitle.classList.add('editing');
   linkTitle.addEventListener('blur', function () {
@@ -224,41 +235,41 @@ if (linkTitle.textContent !== "") {
   });
 }*/
 
-    // function to save links to LS
-    function saveLinksToLocalStorage() {
-      const links = [];
-      const linkItems = linkList.children;
-    
-      for (let i = 0; i < linkItems.length; i++) {
-        const linkItem = linkItems[i];
-        const linkTitle = linkItem.querySelector('.link-title');
-        const faviconImg = linkItem.querySelector('.favicon');
-      
-        if (linkTitle) {
-          const linkData = { href: linkTitle.href, text: linkTitle.textContent, favicon: faviconImg ? faviconImg.src : null};
-          links.push(linkData);
-        }
+  // function to save links to LS
+  function saveLinksToLocalStorage() {
+    const links = [];
+    const linkItems = linkList.children;
+
+    for (let i = 0; i < linkItems.length; i++) {
+      const linkItem = linkItems[i];
+      const linkTitle = linkItem.querySelector(".link-title");
+      const faviconImg = linkItem.querySelector(".favicon");
+
+      if (linkTitle) {
+        const linkData = {
+          href: linkTitle.href,
+          text: linkTitle.textContent,
+          favicon: faviconImg ? faviconImg.src : null,
+        };
+        links.push(linkData);
       }
-      console.log("Saving links to Local Storage:", links);
-      localStorage.setItem('links', JSON.stringify(links));
     }
+    console.log("Saving links to Local Storage:", links);
+    localStorage.setItem("links", JSON.stringify(links));
+  }
 
-    function loadLinksFromLocalStorage() {
-     
-        const linksData = localStorage.getItem('links');
-        console.log(linksData)
-        if (linksData) {
-          const links = JSON.parse(linksData);
-          links.forEach(linkData => {
-            addLink(linkData.href, linkData.text, linkData.favicon);
-           
-          });
-          console.log("Loading links to Local Storage:", links);
-        }
-     
+  function loadLinksFromLocalStorage() {
+    const linksData = localStorage.getItem("links");
+    console.log(linksData);
+    if (linksData) {
+      const links = JSON.parse(linksData);
+      links.forEach((linkData) => {
+        addLink(linkData.href, linkData.text, linkData.favicon);
+      });
+      console.log("Loading links to Local Storage:", links);
     }
-    loadLinksFromLocalStorage();
-
+  }
+  loadLinksFromLocalStorage();
     // links number 2
     /*const addLinkBtn = document.querySelector(".add-link-btn");
 const linkList = document.querySelector(".links-list");
