@@ -250,7 +250,7 @@ if (linkTitle.textContent !== "") {
         if (linksData) {
           const links = JSON.parse(linksData);
           links.forEach(linkData => {
-            addLink(linkData.href, linkData.text);
+            addLink(linkData.href, linkData.text, linkData.favicon);
            
           });
           console.log("Loading links to Local Storage:", links);
