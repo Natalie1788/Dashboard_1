@@ -1,4 +1,5 @@
 import axios from 'axios';
+//require('dotenv').config();
 
 document.addEventListener("DOMContentLoaded", () => { 
   getWeatherData();
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const bgBtn = document.querySelector(".bg-btn");
   // API key
-  const apiKey = 'bcHkSd5kZDFq2S3mbb8dYIRCb14rGXapmtF2WqANODFX82CMdY3rO4Hv';
+  const apiKey = import.meta.env.apiKey;
   
   // URL for images
   const apiUrl = 'https://api.pexels.com/v1/curated';
@@ -81,11 +82,11 @@ const addLinkBtn = document.querySelector(".add-link-btn");
     const newLinkItem = document.createElement("li");
     newLinkItem.classList.add("links-list-item");
 
-    // Проверяем, существует ли уже ссылка внутри элемента
+    // check if title already exists
     const existingLinkTitle = newLinkItem.querySelector(".link-title");
     console.log("existingLinkTitle", existingLinkTitle);
 
-    // Если существует, используем её, иначе создаем новую
+    // if exists use it or create a new one
     const linkTitle = existingLinkTitle || document.createElement("a");
 
     linkTitle.classList.add("link-title");
@@ -142,7 +143,7 @@ const addLinkBtn = document.querySelector(".add-link-btn");
           }
         } catch (error) {
           console.error("Error fetching data:", error);
-          // В случае ошибки, устанавливаем название сайта и фавикон равными введенному URL
+          // in error case set title and favicon like url
           const faviconUrl = getFaviconUrl(linkInput.value);
           setLinkProperties(
             linkTitle,
@@ -161,14 +162,14 @@ const addLinkBtn = document.querySelector(".add-link-btn");
       linkList.removeChild(newLinkItem);
       const linksData = JSON.parse(localStorage.getItem("links")) || [];
 
-      // Находим индекс элемента с соответствующим href
+      // find index with href
       const indexToDelete = linksData.findIndex((link) => link.href === href);
 
       if (indexToDelete !== -1) {
-        // Удаляем элемент из массива данных
+        // delete element from array
         linksData.splice(indexToDelete, 1);
 
-        // Сохраняем обновленные данные в локальное хранилище
+        
         localStorage.setItem("links", JSON.stringify(linksData));
       }
     });
@@ -377,7 +378,7 @@ function loadLinksFromLocalStorage() {
  
 // weather info--------------------------------------------------------------------------------------------------------//
 
-const apiKey1 = '44b63fb69d06b1de9ed7dfbbf674d58d';
+const apiKey1 = import.meta.env.apiKey1;
 //const city = 'Stockholm';
 const numberOfDays = 5;
 const apiUrl1 = "https://api.openweathermap.org/data/2.5/weather";
@@ -387,7 +388,7 @@ const apiUrl1 = "https://api.openweathermap.org/data/2.5/weather";
 async function getWeatherData() {
   
   try {
-   const response =  await axios.get("https://api.openweathermap.org/data/2.5/forecast?q=Stockholm&cnt=25&appid=44b63fb69d06b1de9ed7dfbbf674d58d")
+   const response =  await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=Stockholm&cnt=25&appid=${apiKey1}`)
     //const response = await axios.get(`${apiUrl1}?q=${city}&cnt=${numberOfDays}&appid=${apiKey1}`);
    
     const data = response.data;
@@ -443,21 +444,20 @@ async function getAndDisplayStockholmTime() {
     //dateAndTime.innerHTML = datetime;
     //console.log('Current time in Stockholm:', datetime);
 
-// Создаем объект Date из строки времени
 const stockholmTime = new Date(datetime);
 
-    // Извлекаем компоненты даты и времени
+ 
     const year = stockholmTime.getFullYear();
     //const month = stockholmTime.toLocaleString('default', { month: 'long' });
-    //const month = stockholmTime.getMonth() + 1; // добавляем 1, так как месяцы начинаются с 0
-    const month = (stockholmTime.getMonth() + 1).toString().padStart(2, '0'); // добавляем ведущий ноль, если необходимо
+    //const month = stockholmTime.getMonth() + 1; // add 0, month number begin from 0
+    const month = (stockholmTime.getMonth() + 1).toString().padStart(2, '0'); // add 0
     const day = stockholmTime.getDate();
     //const hours = stockholmTime.getHours();
     const hours = stockholmTime.getHours().toString().padStart(2, '0');
     //const minutes = stockholmTime.getMinutes();
     const minutes = stockholmTime.getMinutes().toString().padStart(2, '0');
 
-    // Форматируем вывод
+    // formatting
     const formattedDate = `${year} - ${month} - ${day}, `;
     const formattedTime = `${hours}:${minutes}`;
     dateText.innerHTML = formattedDate;
@@ -468,8 +468,8 @@ const stockholmTime = new Date(datetime);
     console.error('Error fetching Stockholm time:', error.message);
   }
 
-  // Устанавливаем интервал обновления времени (в миллисекундах)
-const updateInterval = 1000 * 60; // 1 минута
+  // set updating interval in ms
+const updateInterval = 1000 * 60; // 1 minute
 setInterval(getAndDisplayStockholmTime, updateInterval);
 }
 
@@ -478,7 +478,7 @@ setInterval(getAndDisplayStockholmTime, updateInterval);
  
 
 
-/*const apiKey1 = '44b63fb69d06b1de9ed7dfbbf674d58d';
+/*
         const city = 'Stockholm';
         const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey1}`;
         console.log('Before axios.get');
@@ -518,12 +518,12 @@ setInterval(getAndDisplayStockholmTime, updateInterval);
         }*/
 
 //currency exchange ------------------------------------------------------------------------------------------------------------//
-/*const appId = '65aad516711a45c89113dbe6fbe8f16f';
-  const baseUrl = 'https://open.er-api.com/v6/latest/';*/
+const apiId = import.meta.env.apiId;
+  //const baseUrl = 'https://open.er-api.com/v6/latest/';*/
 
 async function getExchangeRates() {
   try {
-    const response = await axios.get("https://openexchangerates.org/api/latest.json?app_id=65aad516711a45c89113dbe6fbe8f16f");
+    const response = await axios.get(`https://openexchangerates.org/api/latest.json?app_id=${apiId}`);
     //const response = await axios.get(`${baseUrl}SEK?apikey=${appId}`);
     console.log(response)
     const rates = response.data.rates;
@@ -541,17 +541,16 @@ async function getExchangeRates() {
 
 // Saving notes ----------------------------------------------------------------------------------------------------------//
 
-// Сохраняем текст при каждом изменении в textarea
+
 function saveNote() { 
   const noteTextArea = document.querySelector('.notes-area');
 noteTextArea.addEventListener('input', () => {
-  // localStorage.setItem() здесь, сохраняет текущий текст в localStorage
   localStorage.setItem('userNote', noteTextArea.value);
   console.log(localStorage.item);
 }); 
 }
 
-// При загрузке страницы, проверяем, есть ли сохраненный текст в local storage
+
 function checkSavedNotes() {
   const noteTextArea = document.querySelector('.notes-area');
   const savedNote = localStorage.getItem('userNote');
